@@ -1,6 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import SearchParams from "./conponents/SearchParams";
 import Details from "./conponents/Details";
 
@@ -25,16 +26,25 @@ import Details from "./conponents/Details";
 //   );
 // };
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity,
+      cacheTime: Infinity,
+    },
+  },
+});
+
 const App = () => {
   return (
-    <div>
-      <BrowserRouter>
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
         <Routes>
           <Route path="/details/:id" element={<Details />}></Route>
           <Route path="/" element={<SearchParams />}></Route>
         </Routes>
-      </BrowserRouter>
-    </div>
+      </QueryClientProvider>
+    </BrowserRouter>
   );
 };
 
